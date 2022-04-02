@@ -1,0 +1,12 @@
+#!/bin/bash
+apt-get update && sudo apt-get upgrade
+apt-get install bluez bluez-tools pulseaudio-module-bluetooth -y
+usermod -aG lp $(whoami)
+sh -c "echo 'extra-arguments = --exit-idle-time=-1 --log-target=syslog' >> /etc/pulse/client.conf"
+hciconfig hci0 up
+hciconfig hci0 class 0x200414
+bluetoothctl agent NoInputNoOutput
+bluetoothctl set-alias $(hostname)-BluezSpeaker
+bluetoothctl discoverable-timout 0
+bluetoothctl discoverble yes
+bluetoothctl pairable yes
